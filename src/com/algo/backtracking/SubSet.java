@@ -3,6 +3,11 @@ package com.algo.backtracking;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * https://www.interviewbit.com/problems/subset/
+ * @author RajivDevaraj
+ *
+ */
 public class SubSet {
 
 	static List<Integer> ls = new ArrayList<Integer>();
