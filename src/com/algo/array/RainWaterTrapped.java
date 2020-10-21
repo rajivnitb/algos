@@ -7,45 +7,83 @@ package com.algo.array;
  *
  */
 public class RainWaterTrapped {
+	
+	int counter = 0 ;
+	static int arrayMaxIndex=Integer.MIN_VALUE;
 
-	public int getMaxRainTrapped(int[] a) {
-		int end=a.length-1;
-		int start=1;
+	private int scanMaxIndex(int []a,int index) {
+		int max = Integer.MIN_VALUE;
+		int orgindex = 0 ;
+		for (int i = index ; i < a.length-1;i++) {
+			 if (max <= a[i]) {
+				 max=a[i];
+				 orgindex=i;
+			 }
+			 			
+		}
+		return orgindex ;
+	}
+	
+	public int getMaxRainTrapped(int[] a,int max,int current,int maxIndex,int prevMaxIndex,int next) {
 		
-		int maxHeight= Integer.MIN_VALUE;
-		int maxHeightIndex = 0;
-		for (int i=0;i<a.length-1;i++) {
-			maxHeight=Math.max(maxHeight,a[i]);
-			if (maxHeight > a[maxHeightIndex]) {
-				maxHeightIndex=i;
+		if (a[current] < a[current+1]) {
+			return getMaxRainTrapped(a, a[current+1], current+1, current+1,current,current+2);
+		}
+		
+		if (current >= a.length-1 || next >= a.length-1) {
+			return counter;
+		}
+		
+		
+		
+		
+		for (int i = current ; i <= a.length-1;i++) {
+			if (arrayMaxIndex == i && current == i) {
+				continue;
+			}
+			if (prevMaxIndex == i) {
+				continue;
+			} 
+			if (current+1 == i) {
+				if (a[current] >= a[i]) {
+					//current=i;
+					continue;
+				}
+				
+			}
+			if (max == a[i]) {
+				maxIndex=i;
+			}
+					
+			if (max < a[i]) {
+ 				maxIndex=i;
+				max=a[i];
+				break;
 			}
 			
 		}
 		
+		int maxDelta = Math.min(a[current],a[maxIndex]);
+		int tmpCounter = 0 ;
+		for (int i=current+1 ; i <maxIndex ; i++) {
+			tmpCounter=tmpCounter+Math.abs(a[i]-maxDelta);
+		}
 		
-		int count = 0 ;
-		while (start <= maxHeightIndex) {
-             
-			if (a[start] < a[start+1]) {
-				count+=Math.abs(a[start]-a[start+1]);
-				
-			}
-			start++;
+		if (arrayMaxIndex <= maxIndex) {
 
-		}
-
-		if (maxHeightIndex != end) {
-			while(end > maxHeightIndex) {
-				
-				if (a[end] > a[end-1]) {
-					count+=Math.abs(a[end]-a[end-1]);
-					
-				}
-				end--;
-				
+			current = maxIndex;
+            prevMaxIndex=arrayMaxIndex;
+			if (current > a.length - 1) {
+				return counter;
 			}
+			arrayMaxIndex = scanMaxIndex(a, current+1);
+			maxIndex = current;
+			max = Integer.MIN_VALUE;
 		}
-		return count ;
+		
+		counter=counter+tmpCounter+getMaxRainTrapped(a,max,maxIndex,maxIndex,prevMaxIndex,maxIndex+1);
+		
+		return counter ;
 	}
 
 	
@@ -53,8 +91,12 @@ public class RainWaterTrapped {
 	
 
 	public static void main(String args[]) {
-		int[] a = { 0, 1, 0, 2, 1, 0, 1, 3, 1,2, 1, 2, 1 };
-        System.out.println(new RainWaterTrapped().getMaxRainTrapped(a));
+	//	int[] a = { 4, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+		   int []a = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+		RainWaterTrapped rainWT = new RainWaterTrapped();
+		arrayMaxIndex=rainWT.scanMaxIndex(a,0);
+	
+       System.out.println(rainWT.getMaxRainTrapped(a,0,0,0,0,1));
 	}
 
 }
