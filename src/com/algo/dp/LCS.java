@@ -7,26 +7,27 @@ package com.algo.dp;
  */
 public class LCS {
 
-	public int getLCS(String s1,String s2,int n,int m) {
+	private int getLCS(String s1,String s2) {
 		
-		if (n == 0 || m == 0) {
+		if (s1.length() <= 0|| s2.length() <=0) {
 			return 0;
 		}
 		
-		
-		if (s1.charAt(n-1) == s2.charAt(m-1)) {
-			return 1+getLCS(s1,s2,n-1,m-1);
+		if (s1.charAt(0) == s2.charAt(0)) {
+			return 1+getLCS(s1.substring(1),s2.substring(1));
 		}
 		
-		return Math.max(getLCS(s1,s2,n,m-1),getLCS(s1,s2,n-1,m));
+		return Math.max(getLCS(s1.substring(1),s2.substring(1)),
+				getLCS(s1.substring(1),s2));
+		
+		
 	}
 	
 	public static void main(String args[]) {
-		String s1 = "ABCDGH";
-		String s2 = "AEDFHR";
+		String s1="zxabcdezy";
+		String s2 = "yzabcdezx";
 		
-		System.out.println(new LCS().getLCS(s1, s2,s1.length(),s2.length()));
-		
-		
+		LCS lcs = new LCS();
+		System.out.println(lcs.getLCS(s1, s2));
 	}
 }
