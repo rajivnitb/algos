@@ -1,5 +1,11 @@
 package com.algo.dp;
 
+/**
+ * https://leetcode.com/problems/edit-distance/submissions/
+ * https://www.interviewbit.com/problems/edit-distance/
+ * @author Rajiv Devaraj
+ *
+ */
 public class EditDistance {
 
 	public static int getMinDistance(String word1,String word2) {
