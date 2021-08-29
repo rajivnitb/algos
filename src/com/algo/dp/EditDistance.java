@@ -1,39 +1,40 @@
 package com.algo.dp;
 
 public class EditDistance {
+
+	public static int getMinDistance(String word1,String word2) {
+		
+		int [][] a = new int [word1.length()+1][word2.length()+1];
+		
+		for (int i = 1 ; i <= word1.length() ; i++) {
+			a[i][0]=1+a[i-1][0];
+		}
+		
+		for (int i = 1 ; i <= word2.length() ; i++) {
+			a[0][i]=1+a[0][i-1];
+		}
+		
+		for (int i = 1 ; i <= word1.length() ; i++) {
+	      for (int j = 1 ; j <= word2.length() ; j++) {
+	    	  
+	    	  if (word1.charAt(i-1) == word2.charAt(j-1)) {
+	    		  a[i][j]=a[i-1][j-1];
+	    	  }else {
+	    		  a[i][j]=Math.min(a[i-1][j],Math.min(a[i-1][j-1],a[i][j-1]))+1;
+	    	  }
+	    	 
+	    	  
+	      }		
+		}
+		
+		
+		return a[word1.length()][word2.length()];
+	}
 	
-	public int getDistance(String s1,String s2) {
-		
-		if (s1.length() <= 0 ) {
-			return s2.length();
-		}
-		
-		if (s2.length() <= 0 ) {
-			return s1.length();
-		}
-		
-		
-		if (s1.charAt(0) == s2.charAt(0)) {
-			return getDistance(s1.substring(1),s2.substring(1));
-		}
-		
-		
-		
-		
-		return Math.min(Math.min(getDistance(s1,s2.substring(1))+1
-				,getDistance(s1.substring(1),s2)+1),
-				getDistance(s1.substring(1),s2.substring(1)+1));
-		
-		
-		
-		
-	}	
 	
-	public static void main(String [] args) {
-		String s1 = "sunday";
-		String s2 = "saturday";
-	  
-		System.out.println(new EditDistance().getDistance(s1, s2));
+	public static void main(String[] args) {
+		
+		System.out.println(getMinDistance("horse","ros"));
 		
 	}
 }
